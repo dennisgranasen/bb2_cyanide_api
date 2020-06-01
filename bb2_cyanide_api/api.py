@@ -59,6 +59,6 @@ class Agent:
         kwargs['key'] = self.api_key
         kwargs['order'] = 'CreationDate'
         try: 
-          return self.http.get(url)
+          return self.http.get(url=url, params=kwargs, timeout=TIMEOUT)
         except requests.exceptions.Timeout:
           raise BB2APINotAvailable("Service down")
