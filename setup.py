@@ -5,7 +5,7 @@ with open("README.md", "r") as fh:
 
 setuptools.setup(
     name="bb2_cyanide_api",
-    version="0.0.3",
+    version="0.0.4",
     author="Tomas Trnecka",
     author_email="trnecka@gmail.com",
     description="Cyanide BB2 API wrapper",
