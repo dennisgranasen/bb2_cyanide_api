@@ -17,6 +17,9 @@ class Match:
     def competition(self):
       return self.data['match']['competitionname']
 
+    def competition_id(self):
+      return self.data['match']['idcompetition']
+
     def coach1(self):
       return self.data['match']['coaches'][0]
 
