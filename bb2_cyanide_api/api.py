@@ -6,6 +6,8 @@ class BB2APINotAvailable(Exception):
   """Exception to raise for BB2API timeout issues"""
 
 class Agent:
+    DEFAULT_VERSION = 2
+    DEFAULT_PLATFORM = 'pc'
     """BB2 api agent"""
     BASE_URL = "http://web.cyanide-studio.com/ws/bb2/"
     def __init__(self, api_key):
@@ -15,25 +17,60 @@ class Agent:
         http.mount("http://", adapter)
         self.http = http
 
-    def team(self, name):
+    def team(self, name, **kwargs):
         """Pulls team data"""
-        r = self.call("team", name=name)
+        kwargs['name'] = name
+        if 'platform' not in kwargs:
+            kwargs['platform'] = self.DEFAULT_PLATFORM
+        if 'bb' not in kwargs:
+            kwargs['bb'] = self.DEFAULT_VERSION
+        r = self.call("team", **kwargs)
         data = r.json()
         return data
 
-    def match(self, id):
+    def match(self, id, **kwargs):
         """Pulls match id data"""
-        r = self.call("match", match_id=id)
+        kwargs['match_id'] = id
+        #kwargs['id'] = id
+        if 'bb' not in kwargs:
+            kwargs['bb'] = self.DEFAULT_VERSION
+        r = self.call("match", **kwargs)
         data = r.json()
         return data
 
-    def league(self, name):
+    def league(self, name, **kwargs):
         """Pulls league data"""
-        r = self.call("league", league=name)
+        kwargs['league'] = name
+        if 'platform' not in kwargs:
+            kwargs['platform'] = self.DEFAULT_PLATFORM
+        if 'bb' not in kwargs:
+            kwargs['bb'] = self.DEFAULT_VERSION
+        r = self.call("league", kwargs)
+        data = r.json()
+        return data
+
+    def leagues(self, name, **kwargs):
+        """Pulls leagues data"""
+        kwargs['league'] = name
+        if 'platform' not in kwargs:
+            kwargs['platform'] = self.DEFAULT_PLATFORM
+        if 'bb' not in kwargs:
+            kwargs['bb'] = self.DEFAULT_VERSION
+        if 'teams' not in kwargs:
+            kwargs['teams'] = 0 # min no. registered teams
+        if 'limit' not in kwargs:
+            kwargs['limit'] = 100 # max no. leagues to return
+        r = self.call("leagues", **kwargs)
         data = r.json()
         return data
 
     def competitions(self, leagues):
+        """Pulls competitions data"""
+        r = self.call("competitions", league=leagues)
+        data = r.json()
+        return data
+
+    def contest(self, leagues):
         """Pulls competitions data"""
         r = self.call("competitions", league=leagues)
         data = r.json()
@@ -44,7 +81,7 @@ class Agent:
         if 'limit' not in kwargs:
             kwargs['limit'] = 10000
         if 'v' not in kwargs:
-            kwargs['v'] = 1
+            kwargs['v'] = self.DEFAULT_VERSION
         if 'exact' not in kwargs:
             kwargs['exact'] = 0
         if 'start' not in kwargs:
