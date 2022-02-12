@@ -122,7 +122,7 @@ class Agent:
         #if 'order' not in kwargs:
             #kwargs['order'] = 'started'
 
-        r = self.call("matches", **kwargs)
+        r = self.call("teammatches", **kwargs)
         data = r.json()
         return data
 
